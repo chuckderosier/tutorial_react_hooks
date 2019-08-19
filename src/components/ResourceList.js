@@ -1,19 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ResourceList = ({ resourceName }) => {      // destructure resourceName so don't need props.resourceName
-  const [ resources, setResources ] = useState([]);
+const useResources = (resourceName) => {    // custom hook could be used in separate component
+  const [resources, setResources] = useState([]);
 
   const fetchResources = async (resourceName) => {      // async because of await one way call
     const response = await axios.get(`https://jsonplaceholder.typicode.com/${resourceName}`);
 
-    setResources(response.data );   // setState replacement
+    setResources(response.data);   // setState replacement
   }
 
   useEffect(() => {
     fetchResources(resourceName)
   }, [resourceName]);    // if array changes then call the function, if not no additional requests made
                           // replaces below if statement
+  return resources;
+}
+
+const ResourceList = ({ resourceName }) => {      // destructure resourceName so don't need props.resourceName
+
+  const resources = useResources(resourceName);   // re-usable function from custom hook
+
+  // const [resources, setResources] = useState([]);
+
+  // const fetchResources = async (resourceName) => {      // async because of await one way call
+  //   const response = await axios.get(`https://jsonplaceholder.typicode.com/${resourceName}`);
+
+  //   setResources(response.data);   // setState replacement
+  // }
+
+  // useEffect(() => {
+  //   fetchResources(resourceName)
+  // }, [resourceName]);    // if array changes then call the function, if not no additional requests made
+  // // replaces below if statement
 
   return (
     <ul>
