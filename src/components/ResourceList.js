@@ -6,13 +6,13 @@ class ResourceList extends React.Component {
     resources: [],
   }
 
-  async componentDidMount() {
+  async componentDidMount() {   // loads initial data posts with lifecycle methods
     const response = await axios.get(`https://jsonplaceholder.typicode.com/${this.props.resourceName}`);
 
     this.setState({ resources: response.data });
   }
 
-  async componentDidUpdate(prevProps) {
+  async componentDidUpdate(prevProps) {   // switches data when button clicked with lifecycle methods
     if(prevProps.resourceName !== this.props.resourceName) {
       const response = await axios.get(`https://jsonplaceholder.typicode.com/${this.props.resourceName}`);
 
