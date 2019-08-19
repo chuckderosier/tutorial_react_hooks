@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const ResourceList = () => {
+const ResourceList = ({ resourceName }) => {      // destructure resourceName so don't need props.resourceName
   const [ resources, setResources ] = useState([]);
 
-  const setResources = async () => {      // async because of await one way call
-    const response = await axios.get(`https://jsonplaceholder.typicode.com/${this.props.resourceName}`);
+  const fetchResources = async (resourceName) => {      // async because of await one way call
+    const response = await axios.get(`https://jsonplaceholder.typicode.com/${resourceName}`);
 
-    this.setState({ resources: response.data });
+    setResources(response.data );   // setState replacement
   }
 
+  useEffect(() => {
+    fetchResources(resourceName)
+  }, [resourceName]);    // if array changes then call the function, if not no additional requests made
+                          // replaces below if statement
+
   return (
-    // <ul>
-    //   {this.state.resources.map(resource => (
-    //     <li key={resource.id}>{resource.title}</li>
-    //   ))}
-    // </ul>
+    <ul>
+      {resources.map(resource => (
+        <li key={resource.id}>{resource.title}</li>
+      ))}
+    </ul>
   )
 }
 
